@@ -28,7 +28,7 @@ void Employee_put()
     cout<<"\nEmployee Designation:"<<designation;
     cout<<"\nEmployee Salary : "<<salary;
 }
-}
+};
 
 int main()
 {

@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    set<int> number;
+    set<int, greater<int>>  number;
     int n; int val;
 
     cout << "Enter number of elements" << endl;

@@ -1,66 +1,96 @@
 #include <iostream>
 using namespace std;
-
-class LinearQueue 
+class MyQueue 
 {
 private:
-    int* queue;
-    int front, rear, capacity;
-
-    void resize() {
-        int newCapacity = capacity * 2;
-        int* newQueue = new int[newCapacity];
-        for (int i = 0; i < capacity; i++) {
-            newQueue[i] = queue[i];
-        }
-        delete[] queue;
-        queue = newQueue;
-        capacity = newCapacity;
-    }
+    int front, rear;
+    int capacity;
+    int* arr;
 
 public:
-    LinearQueue() : front(-1), rear(-1), capacity(2) {
-        queue = new int[capacity];
+    MyQueue(int n) 
+    {
+        capacity = n;
+        arr = new int[capacity];
+        front = rear = -1;
     }
 
-    ~LinearQueue() {
-        delete[] queue;
-    }
-
-    bool isEmpty() {
-        return front == -1 || front > rear;
-    }
-
-    void enqueue(int value) {
-        if (isEmpty()) {
-            front = 0;
-        }
-        if (rear + 1 == capacity) {
-            resize();
-        }
-        queue[++rear] = value;
-        std::cout << value << " enqueued to the queue.\n";
-    }
-
-    void dequeue() {
-        if (isEmpty()) {
-            std::cout << "Queue is empty. Cannot dequeue.\n";
+    void enqueue(int item) 
+    {
+        if (rear == capacity - 1) 
+        {
+            cout << "Overflow" << endl;
             return;
         }
-        std::cout << queue[front] << " dequeued from the queue.\n";
-        front++;
-        if (front > rear) {
-            front = rear = -1; // Reset the queue when empty
+
+        else if (front == -1) 
+        {front = 0;}
+
+        arr[++rear] = item;
+    }
+
+    void dequeue() 
+    {
+        if (front == -1 || front > rear) 
+        {
+            cout << "Underflow" << endl;
+            return;
+        }
+
+        cout << "Popped: " << arr[front++] << endl;
+        if (front > rear) 
+        {
+            front = rear = -1;
         }
     }
-};
 
-int main() {
-    LinearQueue q;
-    q.enqueue(10);
-    q.enqueue(20);
-    q.dequeue();
-    q.dequeue();
-    q.dequeue();
+    void display() 
+    {
+        if (front == -1) 
+        {
+            cout << "Queue is empty" << endl;
+            return;
+        }
+
+        cout << "Queue elements: ";
+        for (int i = front; i <= rear; i++) 
+        {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+
+    ~MyQueue() 
+    {
+        delete[] arr;
+    }
+};
+int main() 
+{
+    int n, item, pops;
+    cout << "Enter the size of the queue: ";
+    cin >> n;
+
+    MyQueue q(n);
+
+    for (int i = 0; i < n; i++) 
+    {
+        cout << "Enter element " << i + 1 << ": ";
+        cin >> item;
+        q.enqueue(item);
+    }
+
+    q.display();
+
+    cout << "How many elements do you want to pop? ";
+    cin >> pops;
+
+    for (int i = 0; i < pops; i++) 
+    {
+        q.dequeue();
+    }
+
+    q.display();
+
     return 0;
 }
